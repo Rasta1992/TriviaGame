@@ -1,7 +1,11 @@
+$("#start").on("click", function(){
+	game.start();
+})
+
 // variables //
 var questions = [
 
-{question :"How many miles is the sun from the Earth?",
+{question:"How many miles is the sun from the Earth?",
 answers: ["93 Billion","93 Million", "Neither"],
 correctAnswer: "93 Million"
 },
@@ -28,18 +32,8 @@ correctAnswer: "Magnetic field"
 }];
 
 // functions //
-$("#a1").click(function(){
-	$("label#a1")console.log();
-});
-
-$(document).on("click", "#start", function(){
-	game.start();
-});
 
 
-$(document).on("click", "#done", function(){
-	game.done();
-});
 
 
 // game object //
@@ -49,30 +43,100 @@ var game = {
 	correct : 0,
 	counter : 120,
 
-
-	timer: function(){
+	// timer //
+	countdown: function(){
 		game.counter--;
 		$("#timer").html("<h2>" + game.counter + "<h2>");
 
-		if (game.counter === 0) {
+		if (game.counter <= 0){
 			game.done();
 		}
 	},
 
 
 	start: function(){
-		time = setInterval(game.timer, 1000);
-		//$("#timer").append("<h2>" + game.counter + "</h2>");
+		//start timer //
+		timer = setInterval(game.countdown,1000);
+		$("#sub-wrapper").prepend("<h2> Time left: <span id ='timer'>120</span> seconds. </h2>");
+		$("#start").remove();
+		// adding questions and answers //
+		for  (var i = 0; i < questions.length; i++){
+			$("#quiz-area").append("<h2>" + questions[i].question + "</h2>");
+
+			for (var j = 0; j < questions[i].answers.length; j++){
+				$("#quiz-area").append("<input type= 'radio' name = 'question-"+i+"' value='"+questions[i].answers[j]+"'>"+questions[i].answers[j])
+
+			}
+			
+		}
+
 	},
 
+	// checking user input values //
+	done: function(){
+		$.each($('input[name="question-0"]:checked'),function(){
+			if($(this).val()==questions[0].correctAnswer){
+				game.correct++;
+			}
+			else{
+				game.incorrect++;
+			}
+		});
+	
+		$.each($('input[name="question-1"]:checked'),function(){
+			if($(this).val()==questions[1].correctAnswer){
+				game.correct++;
+			}
+			else{
+				game.incorrect++;
+			}
+		});
+	
+		$.each($('input[name="question-2"]:checked'),function(){
+			if($(this).val()==questions[2].correctAnswer){
+				game.correct++;
+			}
+			else{
+				game.incorrect++;
+			}
+		});
+	
+		$.each($('input[name="question-3"]:checked'),function(){
+			if($(this).val()==questions[3].correctAnswer){
+				game.correct++;
+			}
+			else{
+				game.incorrect++;
+			}
+		});
+	
+		$.each($('input[name="question-4"]:checked'),function(){
+			if($(this).val()==questions[4].correctAnswer){
+				game.correct++;
+			}
+			else{
+				game.incorrect++;
+			}
+		});
+		this.result();
+	},
+
+	result: function(){
+		clearInterval(timer);
+		$("#sub-wrapper h2").remove();
+		$("#sub-wrapper").html("<h2>You finished !</h2>");
+		$("#sub-wrapper").append("<h3> Correct: "+this.correct+"</h3>");
+		$("#sub-wrapper").append("<h3> Incorrect: "+this.incorrect+"</h3>");
+
+	}
+	
 
 
 
 
 
 
-
-};
+}
 
 
 
